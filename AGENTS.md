@@ -32,6 +32,7 @@ src/
 ├── lib/                      # Logique pure, zéro React (entièrement testée)
 │   ├── secret.ts             # unseal : PBKDF2 + AES-GCM, validation du code
 │   ├── richText.ts           # parseEmphasis : le **gras** porté par le message
+│   ├── schedule.ts           # OPENS_AT : l'heure d'ouverture du jeu
 │   ├── postits.ts            # Étiquettes AA..DB, tuile DEPART, inclinaison
 │   └── celebration.ts        # Positions des confettis et des ballons
 ├── components/
@@ -71,7 +72,7 @@ sous-répertoire.
 
 | Adresse | Page |
 |---|---|
-| `#/` | Accueil : logo, titre, champ de code |
+| `#/` | Accueil : logo, titre, champ de code (voir Heure d'ouverture) |
 | `#/init` | Grille des post-it |
 | `#/{code}` | Résultat : succès si le code ouvre le sceau, échec sinon |
 
@@ -82,6 +83,20 @@ distincte.
 Les routes vivent dans `src/routes.ts` sous forme de `RouteObject[]`, sans JSX.
 `main.tsx` les monte avec `createHashRouter`, les tests avec `createMemoryRouter`:
 la même table est vérifiée des deux côtés.
+
+---
+
+## Heure d'ouverture
+
+`OPENS_AT` dans `src/lib/schedule.ts` fixe l'instant où le jeu démarre, en date
+absolue avec décalage horaire (`2026-09-12T18:00:00+02:00`). Avant cette heure,
+l'accueil remplace le formulaire par "Il est trop tôt, reviens plus tard".
+L'accueil bascule tout seul à l'heure dite, sans rechargement.
+
+C'est une pancarte, pas une serrure : le test tourne sur l'horloge du visiteur,
+donc reculer sa montre ou lire le bundle suffit à passer. Les routes `#/init` et
+`#/{code}` restent d'ailleurs accessibles avant l'ouverture. Ce qui protège
+vraiment la récompense reste le message scellé.
 
 ---
 

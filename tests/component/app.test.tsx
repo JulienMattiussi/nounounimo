@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 import { BALLOON_COUNT, CONFETTI_COUNT } from '@/lib/celebration'
 import { routes } from '@/routes'
+import { OPENS_AT } from '@/lib/schedule'
 import { TEST_CODE, TEST_REWARD_SHOWN, TEST_REWARD_STRONG } from '../fixtures/sealed'
 
 vi.mock('@/sealed', async () => {
@@ -13,7 +14,15 @@ vi.mock('@/sealed', async () => {
 const renderAt = (path: string) =>
   render(<RouterProvider router={createMemoryRouter(routes, { initialEntries: [path] })} />)
 
+const freezeClock = (moment: Date) => {
+  vi.useFakeTimers({ toFake: ['Date'] })
+  vi.setSystemTime(moment)
+}
+
 describe('home page', () => {
+  beforeEach(() => freezeClock(new Date(OPENS_AT.getTime() + 1000)))
+  afterEach(() => vi.useRealTimers())
+
   it('shows the title, the icon and the code field', () => {
     renderAt('/')
     expect(screen.getByRole('heading', { name: 'nounounimo' })).toBeInTheDocument()
@@ -46,6 +55,26 @@ describe('home page', () => {
     expect(
       await screen.findByRole('heading', { name: /vous vous êtes trompé/i }),
     ).toBeInTheDocument()
+  })
+})
+
+describe('opening time', () => {
+  afterEach(() => vi.useRealTimers())
+
+  it('holds the door shut before the opening', () => {
+    freezeClock(new Date(OPENS_AT.getTime() - 60_000))
+    renderAt('/')
+    expect(screen.getByRole('heading', { name: 'nounounimo' })).toBeInTheDocument()
+    expect(screen.getByText(/Il est trop tôt, reviens plus tard/i)).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Valider' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /post-it/i })).not.toBeInTheDocument()
+  })
+
+  it('opens on the dot', () => {
+    freezeClock(OPENS_AT)
+    renderAt('/')
+    expect(screen.getByRole('button', { name: 'Valider' })).toBeInTheDocument()
+    expect(screen.queryByText(/trop tôt/i)).not.toBeInTheDocument()
   })
 })
 

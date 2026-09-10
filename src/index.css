@@ -91,6 +91,18 @@
   animation: nnm-pop 0.45s ease-out both;
 }
 
+@keyframes nnm-tick {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.nnm-hand {
+  transform-box: view-box;
+  transform-origin: 32px 39px;
+  animation: nnm-tick 5s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nnm-animated,
   .nnm-pop {
