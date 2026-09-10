@@ -20,6 +20,7 @@ describe('home page', () => {
     expect(screen.getByRole('img', { name: /chat et un lapin/i })).toBeInTheDocument()
     expect(screen.getByLabelText(/le code que le chemin vous a révélé/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Valider' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /post-it/i })).toHaveAttribute('href', '/init')
   })
 
   it('keeps Valider unusable until something is typed', async () => {

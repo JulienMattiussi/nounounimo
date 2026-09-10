@@ -27,19 +27,24 @@ export default function Init() {
                 style={{ transform: `rotate(${postitTilt(index)}deg)` }}
                 className={
                   tile.isStart
-                    ? '@container flex aspect-square items-center justify-center rounded-xs border-b-2 border-terracotta-dark bg-terracotta shadow-sm'
-                    : 'flex aspect-square items-start justify-start overflow-hidden rounded-xs border-b-2 border-postit-edge bg-postit p-0.5 shadow-sm sm:p-1'
+                    ? '@container relative flex aspect-square items-center justify-center rounded-xs border-b-2 border-terracotta-dark bg-terracotta shadow-sm'
+                    : '@container relative flex aspect-square items-center justify-center rounded-xs border-b-2 border-postit-edge bg-postit shadow-sm'
                 }
               >
-                <span
-                  className={
-                    tile.isStart
-                      ? 'font-display text-[23cqw] leading-none font-black tracking-tighter text-cream'
-                      : 'font-display text-[0.55rem] font-bold text-bark sm:text-xs'
-                  }
-                >
-                  {tile.label}
-                </span>
+                {tile.isStart ? (
+                  <span className="font-display text-[23cqw] leading-none font-black tracking-tighter text-cream">
+                    {tile.label}
+                  </span>
+                ) : (
+                  <>
+                    <span className="absolute top-0 left-[8%] font-display text-[24cqw] leading-tight font-bold text-bark-soft">
+                      {tile.label}
+                    </span>
+                    <span className="mt-[12%] font-display text-[52cqw] leading-none font-black text-bark">
+                      {tile.digit}
+                    </span>
+                  </>
+                )}
               </li>
             ))}
           </ul>

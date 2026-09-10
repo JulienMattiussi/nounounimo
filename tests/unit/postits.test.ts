@@ -16,7 +16,7 @@ describe('postits', () => {
   it('puts the start tile dead centre', () => {
     const tiles = postits()
     expect(START_INDEX).toBe(40)
-    expect(tiles[START_INDEX]).toEqual({ label: START_LABEL, isStart: true })
+    expect(tiles[START_INDEX]).toEqual({ label: START_LABEL, digit: '', isStart: true })
     expect(tiles.filter((tile) => tile.isStart)).toHaveLength(1)
   })
 
@@ -32,6 +32,20 @@ describe('postits', () => {
 
   it('never repeats a label', () => {
     expect(new Set(postits().map((tile) => tile.label)).size).toBe(POSTIT_COUNT)
+  })
+
+  it('carries one digit on every tile but the start', () => {
+    for (const tile of postits()) {
+      expect(tile.digit).toMatch(tile.isStart ? /^$/ : /^[0-9]$/)
+    }
+  })
+
+  it('keeps the digits already written on the real post-it', () => {
+    const digitOf = (label: string) => postits().find((tile) => tile.label === label)?.digit
+    expect(digitOf('AD')).toBe('1')
+    expect(digitOf('BL')).toBe('3')
+    expect(digitOf('CR')).toBe('0')
+    expect(digitOf('DB')).toBe('4')
   })
 })
 

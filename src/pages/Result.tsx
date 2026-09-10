@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router'
+import { useParams } from 'react-router'
 import BrandLink from '@/components/BrandLink'
 import Card from '@/components/Card'
 import Celebration from '@/components/Celebration'
 import CodeForm from '@/components/CodeForm'
+import PostitNote from '@/components/PostitNote'
 import { parseEmphasis } from '@/lib/richText'
 import { unseal } from '@/lib/secret'
 import { SEALED_MESSAGE } from '@/sealed'
@@ -77,14 +78,7 @@ export default function Result() {
         </div>
       </Card>
 
-      {status === 'failure' && (
-        <p className="text-center text-sm leading-relaxed text-bark-soft">
-          Si jamais vous avez mélangé les post-it, voici comment les réinitialiser :{' '}
-          <Link to="/init" className="font-semibold text-terracotta underline">
-            la grille des post-it
-          </Link>
-        </p>
-      )}
+      {status === 'failure' && <PostitNote />}
     </div>
   )
 }

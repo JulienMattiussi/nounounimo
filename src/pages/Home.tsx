@@ -1,6 +1,7 @@
 import Card from '@/components/Card'
 import CodeForm from '@/components/CodeForm'
 import Logo from '@/components/Logo'
+import PostitNote from '@/components/PostitNote'
 
 export default function Home() {
   return (
@@ -11,9 +12,12 @@ export default function Home() {
           nounounimo
         </h1>
       </header>
-      <Card>
-        <CodeForm />
-      </Card>
+      <div className="flex flex-col gap-4">
+        <Card>
+          <CodeForm />
+        </Card>
+        <PostitNote />
+      </div>
     </div>
   )
 }

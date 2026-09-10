@@ -39,7 +39,8 @@ src/
 │   ├── BrandLink.tsx         # Logo + nom, retour à l'accueil
 │   ├── Card.tsx              # Encart crème commun à toutes les pages
 │   ├── Celebration.tsx       # Décor de victoire : ballons en fond, confettis
-│   └── CodeForm.tsx          # Champ de code + Valider, partagé accueil / échec
+│   ├── CodeForm.tsx          # Champ de code + Valider, partagé accueil / échec
+│   └── PostitNote.tsx        # Renvoi vers #/init, partagé accueil / échec
 ├── pages/
 │   ├── Home.tsx              # Route #/
 │   ├── Result.tsx            # Route #/{code} : vérification, succès ou échec
