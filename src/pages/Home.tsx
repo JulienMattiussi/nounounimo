@@ -1,8 +1,19 @@
+import Card from '@/components/Card'
+import CodeForm from '@/components/CodeForm'
+import Logo from '@/components/Logo'
+
 export default function Home() {
   return (
-    <section>
-      <h1 className="text-2xl font-semibold">nounounimo</h1>
-      <p className="mt-2 text-slate-600">Le projet démarre ici.</p>
-    </section>
+    <div className="flex flex-col gap-8">
+      <header className="text-center text-terracotta">
+        <Logo className="mx-auto h-32 w-32 sm:h-40 sm:w-40" />
+        <h1 className="mt-3 font-display text-5xl font-black tracking-tight sm:text-6xl">
+          nounounimo
+        </h1>
+      </header>
+      <Card>
+        <CodeForm />
+      </Card>
+    </div>
   )
 }

@@ -6,7 +6,10 @@ help: ## Display available commands
 install: ## Install all dependencies
 	npm install
 
-start: ## Start application in development (http://localhost:1313)
+seal: ## Seal the reward message with the code (interactive, writes src/sealed.ts)
+	node scripts/seal.mjs
+
+start: ## Start application in development (http://localhost:8888)
 	npm run dev
 
 build: ## Build application for production

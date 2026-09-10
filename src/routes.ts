@@ -1,8 +1,8 @@
 import type { RouteObject } from 'react-router'
 import App from '@/App'
 import Home from '@/pages/Home'
-import About from '@/pages/About'
-import NotFound from '@/pages/NotFound'
+import Init from '@/pages/Init'
+import Result from '@/pages/Result'
 
 export const routes: RouteObject[] = [
   {
@@ -10,8 +10,8 @@ export const routes: RouteObject[] = [
     Component: App,
     children: [
       { index: true, Component: Home },
-      { path: 'a-propos', Component: About },
-      { path: '*', Component: NotFound },
+      { path: 'init', Component: Init },
+      { path: '*', Component: Result },
     ],
   },
 ]

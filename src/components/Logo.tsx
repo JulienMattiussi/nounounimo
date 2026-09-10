@@ -1,0 +1,36 @@
+type LogoProps = {
+  className?: string
+}
+
+export default function Logo({ className }: LogoProps) {
+  return (
+    <svg
+      viewBox="0 0 64 64"
+      role="img"
+      aria-label="Un chat et un lapin assis dos à dos"
+      className={className}
+    >
+      <g transform="translate(0 2)">
+        <g fill="currentColor">
+          <path
+            d="M27 52 C33.5 51 34.5 42 30 39.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="4"
+            strokeLinecap="round"
+          />
+          <path d="M28 56 L28 34 C28 26 22 24 16 26 C10 28 6 42 6 56 Z" />
+          <circle cx="14" cy="19" r="9.5" />
+          <path d="M6.5 14 L5 3.5 L14.5 9.5 Z" />
+          <path d="M16 10.5 L25 4.5 L22.5 15.5 Z" />
+        </g>
+        <g fill="currentColor" opacity="0.6">
+          <path d="M38 56 L38 36 C38 28 44 26 49 28 C54 30 58 42 58 56 Z" />
+          <circle cx="50" cy="21" r="9" />
+          <ellipse cx="46" cy="10" rx="3" ry="9" transform="rotate(-12 46 10)" />
+          <ellipse cx="53" cy="9.5" rx="3" ry="9" transform="rotate(12 53 9.5)" />
+        </g>
+      </g>
+    </svg>
+  )
+}
