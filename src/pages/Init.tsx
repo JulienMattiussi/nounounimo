@@ -1,9 +1,9 @@
 import { Link } from 'react-router'
 import BrandLink from '@/components/BrandLink'
 import Card from '@/components/Card'
-import { postitLabels, postitTilt } from '@/lib/postits'
+import { postits, postitTilt } from '@/lib/postits'
 
-const labels = postitLabels()
+const tiles = postits()
 
 export default function Init() {
   return (
@@ -20,15 +20,25 @@ export default function Init() {
             </p>
           </div>
 
-          <ul className="grid grid-cols-8 gap-1.5 sm:gap-2">
-            {labels.map((label, index) => (
+          <ul className="-mx-2 grid grid-cols-9 gap-0.5 sm:mx-0 sm:gap-2">
+            {tiles.map((tile, index) => (
               <li
-                key={label}
+                key={tile.label}
                 style={{ transform: `rotate(${postitTilt(index)}deg)` }}
-                className="flex aspect-square items-start justify-start rounded-xs border-b-2 border-postit-edge bg-postit p-0.5 shadow-sm sm:p-1"
+                className={
+                  tile.isStart
+                    ? '@container flex aspect-square items-center justify-center rounded-xs border-b-2 border-terracotta-dark bg-terracotta shadow-sm'
+                    : 'flex aspect-square items-start justify-start overflow-hidden rounded-xs border-b-2 border-postit-edge bg-postit p-0.5 shadow-sm sm:p-1'
+                }
               >
-                <span className="font-display text-[0.6rem] font-bold text-bark sm:text-xs">
-                  {label}
+                <span
+                  className={
+                    tile.isStart
+                      ? 'font-display text-[23cqw] leading-none font-black tracking-tighter text-cream'
+                      : 'font-display text-[0.55rem] font-bold text-bark sm:text-xs'
+                  }
+                >
+                  {tile.label}
                 </span>
               </li>
             ))}

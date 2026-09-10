@@ -4,6 +4,7 @@ import BrandLink from '@/components/BrandLink'
 import Card from '@/components/Card'
 import Celebration from '@/components/Celebration'
 import CodeForm from '@/components/CodeForm'
+import { parseEmphasis } from '@/lib/richText'
 import { unseal } from '@/lib/secret'
 import { SEALED_MESSAGE } from '@/sealed'
 
@@ -52,7 +53,15 @@ export default function Result() {
                 Félicitations, vous avez réussi&nbsp;!
               </h1>
               <p className="rounded-soft bg-postit/60 px-4 py-4 text-xl leading-relaxed text-bark">
-                {settled?.reward}
+                {parseEmphasis(settled?.reward ?? '').map((segment, index) =>
+                  segment.strong ? (
+                    <strong key={index} className="font-black">
+                      {segment.text}
+                    </strong>
+                  ) : (
+                    <span key={index}>{segment.text}</span>
+                  ),
+                )}
               </p>
             </div>
           )}

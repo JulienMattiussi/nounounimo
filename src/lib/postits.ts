@@ -1,10 +1,17 @@
-const POSTIT_ROWS = 8
-const POSTIT_COLUMNS = 8
+const POSTIT_ROWS = 9
+const POSTIT_COLUMNS = 9
 
 export const POSTIT_COUNT = POSTIT_ROWS * POSTIT_COLUMNS
+export const START_INDEX = (POSTIT_COUNT - 1) / 2
+export const START_LABEL = 'DEPART'
 
 const ALPHABET_SIZE = 26
 const FIRST_LETTER_CODE = 'A'.charCodeAt(0)
+
+export type Postit = {
+  label: string
+  isStart: boolean
+}
 
 export function postitLabel(index: number): string {
   const first = String.fromCharCode(FIRST_LETTER_CODE + Math.floor(index / ALPHABET_SIZE))
@@ -12,8 +19,13 @@ export function postitLabel(index: number): string {
   return `${first}${second}`
 }
 
-export function postitLabels(): string[] {
-  return Array.from({ length: POSTIT_COUNT }, (_, index) => postitLabel(index))
+export function postits(): Postit[] {
+  return Array.from({ length: POSTIT_COUNT }, (_, index) => {
+    if (index === START_INDEX) {
+      return { label: START_LABEL, isStart: true }
+    }
+    return { label: postitLabel(index < START_INDEX ? index : index - 1), isStart: false }
+  })
 }
 
 export function postitTilt(index: number): number {

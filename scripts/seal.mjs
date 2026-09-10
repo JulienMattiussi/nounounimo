@@ -60,7 +60,7 @@ async function ask() {
 
   const rl = createInterface({ input: stdin, output: stdout })
   const code = (await rl.question(`Code a ${CODE_LENGTH} chiffres : `)).trim()
-  const message = (await rl.question('Message de recompense : ')).trim()
+  const message = (await rl.question('Message de recompense (**gras** possible) : ')).trim()
   rl.close()
   return { code, message }
 }

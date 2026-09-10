@@ -31,7 +31,8 @@ Application **100% front-end**, sans backend. Interface en **français**.
 src/
 ├── lib/                      # Logique pure, zéro React (entièrement testée)
 │   ├── secret.ts             # unseal : PBKDF2 + AES-GCM, validation du code
-│   ├── postits.ts            # Étiquettes AA..CL et inclinaison des post-it
+│   ├── richText.ts           # parseEmphasis : le **gras** porté par le message
+│   ├── postits.ts            # Étiquettes AA..DB, tuile DEPART, inclinaison
 │   └── celebration.ts        # Positions des confettis et des ballons
 ├── components/
 │   ├── Logo.tsx              # Chat et lapin dos à dos (même dessin que le favicon)
@@ -42,7 +43,7 @@ src/
 ├── pages/
 │   ├── Home.tsx              # Route #/
 │   ├── Result.tsx            # Route #/{code} : vérification, succès ou échec
-│   └── Init.tsx              # Route #/init : grille 8x8 de post-it
+│   └── Init.tsx              # Route #/init : grille 9x9 de post-it
 ├── App.tsx                   # Layout : fond crème + <Outlet />
 ├── routes.ts                 # Table de routes, partagée par l'app et les tests
 ├── sealed.ts                 # GÉNÉRÉ par make seal, ne pas éditer à la main
@@ -103,7 +104,13 @@ make seal
 ```
 
 Le script demande le code et le message, puis écrit `src/sealed.ts`. Le texte en
-clair ne touche jamais le disque ni git. `src/sealed.ts` est livré avec un
+clair ne touche jamais le disque ni git.
+
+Le message accepte du **gras** avec la syntaxe `**...**`. La mise en forme
+voyage donc **dans le chiffré**, jamais dans le code : écrire un fragment de la
+récompense en dur dans un composant pour le mettre en valeur reviendrait à
+l'afficher à qui lit le source. `parseEmphasis` ne fait que découper ce que
+`unseal` a rendu. `src/sealed.ts` est livré avec un
 secret de démonstration (code `12345678`) : tant que `make seal` n'a pas été
 lancé, le site n'a rien de sérieux à protéger.
 

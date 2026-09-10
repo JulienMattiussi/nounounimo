@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 import { BALLOON_COUNT, CONFETTI_COUNT } from '@/lib/celebration'
 import { routes } from '@/routes'
-import { TEST_CODE, TEST_REWARD } from '../fixtures/sealed'
+import { TEST_CODE, TEST_REWARD_SHOWN, TEST_REWARD_STRONG } from '../fixtures/sealed'
 
 vi.mock('@/sealed', async () => {
   const { TEST_SEALED } = await import('../fixtures/sealed')
@@ -50,11 +50,18 @@ describe('home page', () => {
 
 describe('result page', () => {
   it('congratulates and reveals the message on the right code', async () => {
-    renderAt(`/${TEST_CODE}`)
+    const { container } = renderAt(`/${TEST_CODE}`)
     expect(
       await screen.findByRole('heading', { name: /Félicitations, vous avez réussi/i }),
     ).toBeInTheDocument()
-    expect(screen.getByText(TEST_REWARD)).toBeInTheDocument()
+    expect(container.textContent).toContain(TEST_REWARD_SHOWN)
+  })
+
+  it('renders the emphasis carried by the message, without showing its markers', async () => {
+    const { container } = renderAt(`/${TEST_CODE}`)
+    await screen.findByRole('heading', { name: /Félicitations/i })
+    expect(container.textContent).not.toContain('**')
+    expect(container.querySelector('strong')).toHaveTextContent(TEST_REWARD_STRONG)
   })
 
   it('decorates the win with confetti and balloons, hidden from screen readers', async () => {
@@ -72,9 +79,10 @@ describe('result page', () => {
   })
 
   it('never leaks the message on a wrong code', async () => {
-    renderAt('/00000000')
+    const { container } = renderAt('/00000000')
     await screen.findByRole('heading', { name: /vous vous êtes trompé/i })
-    expect(screen.queryByText(TEST_REWARD)).not.toBeInTheDocument()
+    expect(container.textContent).not.toContain(TEST_REWARD_SHOWN)
+    expect(container.textContent).not.toContain(TEST_REWARD_STRONG)
   })
 
   it('offers the code field again and the post-it note when the code is wrong', async () => {
@@ -93,12 +101,19 @@ describe('result page', () => {
 })
 
 describe('init page', () => {
-  it('lays out the 64 post-it from AA to CL', () => {
+  it('lays out the 81 post-it from AA to DB', () => {
     renderAt('/init')
-    const postits = screen.getAllByRole('listitem')
-    expect(postits).toHaveLength(64)
-    expect(postits[0]).toHaveTextContent('AA')
-    expect(postits.at(-1)).toHaveTextContent('CL')
+    const tiles = screen.getAllByRole('listitem')
+    expect(tiles).toHaveLength(81)
+    expect(tiles[0]).toHaveTextContent('AA')
+    expect(tiles.at(-1)).toHaveTextContent('DB')
+  })
+
+  it('marks the centre tile as the start', () => {
+    renderAt('/init')
+    const tiles = screen.getAllByRole('listitem')
+    expect(tiles[40]).toHaveTextContent('DEPART')
+    expect(tiles.filter((tile) => tile.textContent === 'DEPART')).toHaveLength(1)
   })
 
   it('offers a way back home', () => {
